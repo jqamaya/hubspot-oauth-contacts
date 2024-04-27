@@ -1,3 +1,8 @@
+# Screenshots
+![image](https://github.com/jqamaya/hubspot-oauth-contacts/assets/13392538/c8493ff8-c92c-4fc8-a32b-a970800b1013)
+![image](https://github.com/jqamaya/hubspot-oauth-contacts/assets/13392538/610f9d27-2796-4f8c-b18d-9bd186249e37)
+
+
 # Client - React
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
