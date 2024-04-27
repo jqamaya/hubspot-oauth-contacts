@@ -8,9 +8,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-
 function App() {
-
   return (
     <Routes>
       <Route path='/' index element={<Contacts />} />

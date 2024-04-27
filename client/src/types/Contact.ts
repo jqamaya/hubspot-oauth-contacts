@@ -10,6 +10,7 @@ export type ContactData = {
   contacts: Contact[];
   total: number;
   total_pages: number;
+  error?: string;
 };
 
 export type ContactQueryParams = {

@@ -40,8 +40,8 @@ function Contacts() {
 
   const fetch = useCallback(async (customerDateRange?: number[]) => {
     const data = await fetchContacts({ page, customerDateRange });
-    setContacts(data.contacts);
-    setTotalPages(data.total_pages);
+    setContacts(data?.contacts || []);
+    setTotalPages(data?.total_pages || 0);
   }, [page, fetchContacts]);
 
   useEffect(() => {
@@ -185,7 +185,7 @@ function Contacts() {
         ) : (
           <Box flex={1} justifyContent="center" alignItems="center">
             <Typography variant='h6' textAlign="center">
-              No contacts found.
+              No contacts found. Please retry later.
             </Typography>
           </Box>
         )

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
+import { useLocalStorage } from './useLocalStorage';
 import { ContactData, ContactQueryParams } from '../types/Contact';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -9,9 +10,16 @@ const API_URL = process.env.REACT_APP_API_URL;
 export default function useContacts() {
   const [isLoading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
-  const accessToken = searchParams.get('access_token');
+  const [accessToken, setAccessToken] = useLocalStorage('access_token', '');
 
-  const fetchContacts = async ({ page, customerDateRange = [] }: ContactQueryParams): Promise<ContactData> => {
+  useEffect(() => {
+    setAccessToken(searchParams.get('access_token'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  console.log({accessToken});
+
+  const fetchContacts = useCallback(async ({ page, customerDateRange = [] }: ContactQueryParams): Promise<ContactData> => {
     setLoading(true);
     try {
       let url = `${API_URL}contacts/list?page=${page}`;
@@ -34,7 +42,7 @@ export default function useContacts() {
         total_pages: 0,
       };
     }
-  };
+  }, [accessToken]);
 
   return { fetchContacts, isLoading };
 };
