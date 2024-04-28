@@ -101,7 +101,7 @@ class HubspotContactsHelper
 			if (isset($_GET['start_customer_date']) && isset($_GET['end_customer_date'])) {
 				$start_date = (int)$_GET['start_customer_date'];
 				$end_date = (int)$_GET['end_customer_date'];
-				$query .= " AND lead_date BETWEEN ".$start_date." AND ".$end_date;
+				$query .= " AND customer_date BETWEEN ".$start_date." AND ".$end_date;
 			}
 	
 			$getQuery = "SELECT * FROM contacts ".$query." LIMIT " . $initial_page . ',' . $limit;
