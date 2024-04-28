@@ -6,8 +6,15 @@ use HubSpot\Factory;
 
 class HubspotContactsHelper
 {
-    public static function getContacts($accessToken): void
-    {
+	public static function getContacts($accessToken = ''): void
+	{
+		if (empty($accessToken)) {
+			$result = OAuth2Helper::fetchLatestUser();
+			if (!$result) {
+				exit(0);
+			}
+			$accessToken = $result['access_token'];
+		}
 		$after = null;
 		$object = '\HubSpot\Client\Crm\Contacts\Model\PublicObjectSearchRequest';
 		$hubspot = Factory::createWithAccessToken($accessToken);
@@ -64,7 +71,8 @@ class HubspotContactsHelper
 			$updatedAt = date_format($contact->getUpdatedAt(), "Y-m-d H:i:s");
 
 			$query .= "INSERT INTO `contacts`(`hubspot_id`,`access_token`,`email`,`first_name`,`last_name`,`archived`,`customer_date`,`lead_date`,`created_at`,`updated_at`) ";
-			$query .= "VALUES ('$id','$accessToken','$email','$firstName','$lastName','$archived','$customerDate','$leadDate','$createdAt','$updatedAt');";
+			$query .= "VALUES ('$id','$accessToken','$email','$firstName','$lastName','$archived','$customerDate','$leadDate','$createdAt','$updatedAt') ";
+			$query .= "ON DUPLICATE KEY UPDATE hubspot_id=VALUES(hubspot_id);";
 		}
 
 		if ($conn->multi_query($query) === TRUE) {
