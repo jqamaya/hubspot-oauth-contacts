@@ -19,4 +19,4 @@ CREATE TABLE `hubspot-oauth-contacts`.`contacts` (
   `archived` TINYINT NULL,
   `created_at` VARCHAR(45) NULL,
   `updated_at` VARCHAR(45) NULL,
-  PRIMARY KEY (`hubspot_id`);
+  PRIMARY KEY (`hubspot_id`));
