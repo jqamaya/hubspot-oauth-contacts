@@ -29,3 +29,9 @@ Executes the file based on the provided cron expression.
 - [OAuth API](https://developers.hubspot.com/docs/api/oauth-quickstart-guide)
 - [Contacts API](https://developers.hubspot.com/docs/api/crm/contacts)
 - [Package](https://github.com/HubSpot/hubspot-api-php)
+
+---
+
+# Client
+
+Please check this [repository](https://github.com/jqamaya/hubspot-oauth-contacts-client). 
