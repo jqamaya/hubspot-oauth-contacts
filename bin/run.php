@@ -2,4 +2,4 @@
 
 use Helpers\HubspotContactsHelper;
 
-HubspotContactsHelper::getContacts();
+(new HubspotContactsHelper())->getContacts();

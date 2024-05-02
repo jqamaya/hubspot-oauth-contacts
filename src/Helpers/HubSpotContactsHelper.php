@@ -2,48 +2,28 @@
 
 namespace Helpers;
 
-use HubSpot\Factory;
-
-class HubspotContactsHelper
+class HubspotContactsHelper extends HubSpotAbstractHelper
 {
-	public static function getContacts($accessToken = ''): void
+	protected function getProperties()
 	{
-		if (empty($accessToken)) {
-			$result = OAuth2Helper::fetchLatestUser();
-			if (!$result) {
-				exit(0);
-			}
-			$accessToken = $result['access_token'];
-		}
-		$after = null;
-		$object = '\HubSpot\Client\Crm\Contacts\Model\PublicObjectSearchRequest';
-		$hubspot = Factory::createWithAccessToken($accessToken);
-		$request = new $object([
-			'properties' => [
-				'hs_lifecyclestage_customer_date',
-				'hs_lifecyclestage_lead_date',
-				'email',
-				'firstname',
-				'lastname',
-			],
-		]);
-		$request->setLimit(100);
-		$results = [];
+		return [
+			'hs_lifecyclestage_customer_date',
+			'hs_lifecyclestage_lead_date',
+			'email',
+			'firstname',
+			'lastname',
+		];
+	}
 
-		do {
-			if (!is_null($after)) {
-				$request->setAfter($after);
-			}
-			$objects = $hubspot->crm()->contacts()->searchApi()->doSearch($request);
+	protected function fetchObjects($hubspot, $request)
+	{
+		return $hubspot->crm()->contacts()->searchApi()->doSearch($request);
+	}
 
-			array_push($results, $objects->getResults());
-			if ($objects->getPaging()) {
-				$after = $objects->getPaging()->getNext()->getAfter();
-			} else {
-				$after = null;
-			}
-		} while (isset($after));
-		self::saveContacts($results[0], $accessToken);
+	public function getContacts($accessToken = ''): void
+	{
+		$results = $this->getData($accessToken);
+		self::saveContacts($results, $accessToken);
 	}
 
 	public static function saveContacts($contacts, $accessToken): void

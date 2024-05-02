@@ -16,6 +16,6 @@ $tokens = Factory::create()->auth()->oAuth()->tokensApi()->create(
 OAuth2Helper::saveTokenResponse($tokens);
 
 $accessToken = $tokens->getAccessToken();
-HubspotContactsHelper::getContacts($accessToken);
+(new HubspotContactsHelper())->getContacts($accessToken);
 echo "Redirecting back to app...";
 header("Location: ".$_ENV['APP_URL'].'?access_token='.$accessToken, true, 301);
