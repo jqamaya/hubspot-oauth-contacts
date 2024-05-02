@@ -72,7 +72,7 @@ class HubspotContactsHelper
 
 			$query .= "INSERT INTO `contacts`(`hubspot_id`,`access_token`,`email`,`first_name`,`last_name`,`archived`,`customer_date`,`lead_date`,`created_at`,`updated_at`) ";
 			$query .= "VALUES ('$id','$accessToken','$email','$firstName','$lastName','$archived','$customerDate','$leadDate','$createdAt','$updatedAt') ";
-			$query .= "ON DUPLICATE KEY UPDATE hubspot_id=VALUES(hubspot_id);";
+			$query .= "ON DUPLICATE KEY UPDATE access_token=VALUES(access_token), archived=VALUES(archived), customer_date=VALUES(customer_date), lead_date=VALUES(lead_date), updated_at=VALUES(updated_at);";
 		}
 
 		if ($conn->multi_query($query) === TRUE) {

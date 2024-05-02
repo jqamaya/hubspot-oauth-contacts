@@ -63,9 +63,14 @@ class OAuth2Helper
 		$accessToken = $_SERVER['HTTP_ACCESS_TOKEN'];
 
 		$conn = openConnection();
-		$getQuery = "SELECT expires_at FROM users WHERE access_token=?";
-		$expiresAt = $conn->execute_query($getQuery, [$accessToken])->fetch_column();
+		$getQuery = "SELECT expires_at FROM users WHERE access_token='".$accessToken."'";
+		$result = $conn->query($getQuery);
 		closeConnection($conn);
+
+		if ($result->num_rows <= 0) {
+			return false;
+		}
+		$expiresAt = $result->fetch_assoc()['expires_at'];
 
 		if ($expiresAt) {
 			return $expiresAt >= time();
@@ -77,7 +82,7 @@ class OAuth2Helper
 	{
 		$conn = openConnection();
 		$getQuery = "SELECT * FROM users ORDER BY id DESC LIMIT 1";
-		$result = $conn->execute_query($getQuery)->fetch_assoc();
+		$result = $conn->query($getQuery)->fetch_assoc();
 		closeConnection($conn);
 		return $result;
 	}
@@ -87,8 +92,8 @@ class OAuth2Helper
 		if (array_key_exists('HTTP_ACCESS_TOKEN', $_SERVER)) {
 			$accessToken = $_SERVER['HTTP_ACCESS_TOKEN'];
 			$conn = openConnection();
-			$getQuery = "SELECT * FROM users WHERE access_token=?";
-			$result = $conn->execute_query($getQuery, [$accessToken])->fetch_assoc();
+			$getQuery = "SELECT * FROM users WHERE access_token='".$accessToken."'";
+			$result = $conn->query($getQuery)->fetch_assoc();
 			closeConnection($conn);
 		} else {
 			$result = self::fetchLatestUser();
